@@ -7,5 +7,5 @@ shortlist this method is based on the moneyball strategy from the movie by the s
 """
 
 """
-What this program does is that 
+What this program does is that uses a 
 """
