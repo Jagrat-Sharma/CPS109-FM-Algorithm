@@ -1,7 +1,4 @@
-import pandas as pd
-import datetime as dt
-import random as rd
-import os
+import pandas as pd, datetime as dt, random as rd, os
 # ---------------------------------------
 # Problem Description
 # ---------------------------------------
@@ -48,7 +45,6 @@ def team_select():
 
 def premier_league():
     print("English Premier League has been selected.")
-    conf = input("Would you like to change your preference? (yes/no): ")
     disc = {
         1:"Arsenal",
         6:"Burnley",
@@ -71,75 +67,196 @@ def premier_league():
         15:"Newcastle",
         20:"West Ham"
     }
+    print("Please Select Your Team from the list below:")
+    print("1. Arsenal           6. Burnley          11. Ipswich          16. Norwich\n"
+          "2. Aston Villa       7. Chelsea          12. Liverpool        17. Nottm Forest\n"
+          "3. Bournemouth       8. Crystal Palace   13. Man City         18. Sunderland\n"
+          "4. Brentford         9. Everton          14. Man UFC          19. Tottenham\n"
+          "5. Brighton          10. Fullham         15. Newcastle        20. West Ham")
     while True:
-        if conf.casefold() == 'yes':
-            return None
-        elif conf.casefold() == 'no':
-            print("Please Select Your Team from the list below:")
-            print("1. Arsenal           6. Burnley          11. Ipswich          16. Norwich\n"
-                  "2. Aston Villa       7. Chelsea          12. Liverpool        17. Nottm Forest\n"
-                  "3. Bournemouth       8. Crystal Palace   13. Man City         18. Sunderland\n"
-                  "4. Brentford         9. Everton          14. Man UFC          19. Tottenham\n"
-                  "5. Brighton          10. Fullham         15. Newcastle        20. West Ham")
-            team = input("Enter the corresponding number for the team or leave empty for : ")
-            if team == '':
-                team = rd.randint(1, 20)
-                print("Selected Team is", disc[team])
-            x, y = prem_player_search(disc[int(team)])
-            fin_lst = find_replacement(x, y)
-            write_json(fin_lst)
-        else:
-            print("Please enter a valid input.")
+        team = input("Enter the corresponding number for the team or leave empty for a random team: ")
+        if team == '':
+            team = rd.randint(1, 20)
+        try:
+            print("Selected Team is", disc[int(team)])
+        except:
+            print("Invalid Input")
+        # else:
+        # write_json(fin_lst)
+        x, y = player_search(disc[int(team)], "Prem")
+        fin_lst = find_replacement(x, y)
 def laliga():
     print("LaLiga has been selected.")
-    conf = input("Would you like to change your preference? (yes/no): ")
+    disc = {
+        1:"A. Bilbao",
+        6:"Cádiz",
+        11:"Las Palmas",
+        16:"Sevilla",
+        2:"A. Madrid",
+        7:"Espanyol",
+        12:"R. Madrid",
+        17:"Tenerife",
+        3:"Alavés",
+        8:"Getafe",
+        13:"Real Hispalis",
+        18:"Valencia",
+        4:"Atlético Pamplona",
+        9:"Girona",
+        14:"Real San Sebastián",
+        19:"Vallecano",
+        5:"Barcelona",
+        10:"Granada",
+        15:"S. Gijón",
+        20:"Villarreal"
+    }
+    print("Please Select Your Team from the list below:")
+    print("1. A. Bilbao              6. Cádiz          11. Las Palmas          16. Sevilla\n"
+          "2. A. Madrid             7. Espanyol       12. R. Madrid           17. Tenerife\n"
+          "3. Alavés                8. Getafe         13. Real Hispalis       18. Valencia\n"
+          "4. Atlético Pamplona     9. Girona         14. Real San Sebastián  19. Vallecano\n"
+          "5. Barcelona             10. Granada       15. S. Gijón            20. Villarreal")
     while True:
-        if conf.casefold() == 'yes':
-            return None
-        elif conf.casefold() == 'no':
-            print("Please Select Your Team from the list below:")
-            print("1. A.Bilbao              6. Cádiz          11. Las Palmas          16. Sevilla\n"
-                  "2. A. Madrid             7. Espanyol       12. R. Madrid           17. Tenerife\n"
-                  "3. Alavés                8. Getafe         13. Real Hispalis       18. Valencia\n"
-                  "4. Atlético Pamplona     9. Girona         14. Real San Sebastián  19. Vallecano\n"
-                  "5. Barcelona             10. Granada       15. S. Gijón            20. Villarreal")
-        else:
-            print("Please enter a valid input.")
+        team = input("Enter the corresponding number for the team or leave empty for a random team: ")
+        if team == '':
+            team = rd.randint(1, 20)
+        try:
+            print("Selected Team is", disc[int(team)])
+        except:
+            print("Invalid Input")
+        # else:
+            # write_json(fin_lst)
+        x, y = player_search(disc[int(team)], "LaLiga")
+        fin_lst = find_replacement(x, y)
 def bundesliga():
+    disc = {
+        1: "1. FC Köln",
+        6: "Eintracht Frankfurt",
+        11: "Mainz 05",
+        16: "VfB Stuttgart",
+        2: "Augsburg",
+        7: "FC Bayern",
+        12: "Nürnberg",
+        17: "VfL Bochum",
+        3: "Bayer 04",
+        8: "Heidenheim",
+        13: "RB Leipzig",
+        18: "VfL Wolfsburg",
+        4: "Borussia Dortmund",
+        9: "Hertha BSC",
+        14: "SC Freiburg",
+        5: "Borussia M'gladbach",
+        10: "HSV",
+        15: "TSG Hoffenheim",
+    }
     print("Bundesliga has been selected.")
-    conf = input("Would you like to change your preference? (yes/no): ")
+    print("Please Select Your Team from the list below:")
+    print("1. 1. FC Köln              6. Eintracht Frankfurt          11. Mainz 05           16. VfB Stuttgart\n"
+          "2. Augsburg                7. FC Bayern                    12. Nürnberg           17. VfL Bochum\n"
+          "3. Bayer 04                8. Heidenheim                   13. RB Leipzig         18. VfL Wolfsburg\n"
+          "4. Borussia Dortmund       9. Hertha BSC                   14. SC Freiburg\n"
+          "5. Borussia M'gladbach     10. HSV                         15. TSG Hoffenheim")
     while True:
-        if conf.casefold() == 'yes':
-            return None
-        elif conf.casefold() == 'no':
-            print("Please Select Your Team from the list below:")
-            print("1. 1. FC Köln              6. Eintracht Frankfurt          11. Mainz 05           16. VfB Stuttgart\n"
-                  "2. Augsburg                7. FC Bayern                    12. Nürnberg           17. VfL Bochum\n"
-                  "3. Bayer 04                8. Heidenheim                   13. RB Leipzig         18. VfL Wolfsburg\n"
-                  "4. Borussia Dortmund       9. Hertha BSC                   14. SC Freiburg\n"
-                  "5. Borussia M'gladbach     10. HSV                         15. TSG Hoffenheim")
-        else:
-            print("Please enter a valid input.")
+        team = input("Enter the corresponding number for the team or leave empty for a random team: ")
+        if team == '':
+            team = rd.randint(1, 18)
+        try:
+            print("Selected Team is", disc[int(team)])
+        except:
+            print("Invalid Input")
+        x, y = player_search(disc[int(team)], "Germany")
+        fin_lst = find_replacement(x, y)
 def serie_a():
-    pass
-def ligue_un():
-    print("Ligue 1 Uber Eats has been selected.")
-    conf = input("Would you like to change your preference? (yes/no): ")
+    print("Serie A has been selected.")
+    disc = {
+        1: "AC Milan",
+        6: "Cagliari",
+        11: "Juventus",
+        16: "Salento",
+        2: "AS Roma",
+        7: "Cremonese",
+        12: "Lazio",
+        17: "Salernitana",
+        3: "Atalanta",
+        8: "Fiorentina",
+        13: "Parma",
+        18: "Sassuolo",
+        4: "Bologna",
+        9: "Genoa",
+        14: "Parthenope",
+        19: "Torino",
+        5: "Brianza",
+        10: "Inter",
+        15: "Reggiana",
+        20: "Udinese"
+    }
+    print("Please Select Your Team from the list below:")
+    print("1. AC Milan          6. Cagliari          11. Juventus          16. Salento\n"
+          "2. AS Roma           7. Cremonese         12. Lazio             17. Salernitana\n"
+          "3. Atalanta          8. Fiorentina        13. Parma             18. Sassuolo\n"
+          "4. Bologna           9. Genoa             14. Parthenope        19. Torino\n"
+          "5. Brianza           10. Inter            15. Reggiana          20. Udinese")
     while True:
-        if conf.casefold() == 'yes':
-            return None
-        elif conf.casefold() == 'no':
-            print("Please Select Your Team from the list below:")
-            print(
-                "1. AJ Auxerre             6. FC Lorient          11. OGC Nice          16. Rennes\n"
-                "2. AS Monaco              7. FC Nantes           12. OL                17. Strasbourg\n"
-                "3. ASSE                   8. Havre AC            13. OM                18. Toulouse FC\n"
-                "4. Bordeaux               9. LOSC                14. Paris SG\n"
-                "5. Brest                  10. Montpellier        15. RC Lens")
-        else:
-            print("Please enter a valid input.")
-def prem_player_search(team):
-    player = pd.read_excel("Prem Def.xlsx")
+        team = input("Enter the corresponding number for the team or leave empty for a random team: ")
+        if team == '':
+            team = rd.randint(1, 20)
+        try:
+            print("Selected Team is", disc[int(team)])
+        except:
+            print("Invalid Input")
+        # else:
+        # write_json(fin_lst)
+        x, y = player_search(disc[int(team)], "Italy")
+        fin_lst = find_replacement(x, y)
+def ligue_un():
+    disc = {
+        1: "AJ Auxerre",
+        6: "FC Lorient",
+        11: "OGC Nice",
+        16: "Rennes",
+        2: "AS Monaco",
+        7: "FC Nantes",
+        12: "OL",
+        17: "Strasbourg",
+        3: "ASSE",
+        8: "Havre AC",
+        13: "OM",
+        18: "Toulouse FC",
+        4: "Bordeaux",
+        9: "LOSC",
+        14: "Paris SG",
+        5: "Brest",
+        10: "Montpellier",
+        15: "RC Lens",
+    }
+    print("Ligue 1 Uber Eats has been selected.")
+    print("Please Select Your Team from the list below:")
+    print(
+        "1. AJ Auxerre             6. FC Lorient          11. OGC Nice          16. Rennes\n"
+        "2. AS Monaco              7. FC Nantes           12. OL                17. Strasbourg\n"
+        "3. ASSE                   8. Havre AC            13. OM                18. Toulouse FC\n"
+        "4. Bordeaux               9. LOSC                14. Paris SG\n"
+        "5. Brest                  10. Montpellier        15. RC Lens")
+    while True:
+        team = input("Enter the corresponding number for the team or leave empty for a random team: ")
+        if team == '':
+            team = rd.randint(1, 18)
+        try:
+            print("Selected Team is", disc[int(team)])
+        except:
+            print("Invalid Input")
+        x, y = player_search(disc[int(team)], "Fren")
+        fin_lst = find_replacement(x, y)
+def player_search(team, league):
+    if league == "Prem":
+        player = pd.read_excel("Prem Def.xlsx")
+    elif league == "LaLiga":
+        player = pd.read_excel("LaLiga_def.xlsx")
+    elif league == "Fren":
+        player = pd.read_excel("Ligue_une_def.xlsx")
+    elif league == "Germany":
+        player = pd.read_excel("Bundesliga def.xlsx")
+    else:
+        player = pd.read_excel("Serie A def.xlsx")
     player.set_index("Club", inplace=True)
     name = player.set_index("Name", inplace=False)
     club_player = player.loc[team]
@@ -207,7 +324,16 @@ def find_replacement(player, player_name):
     fin_lst.remove(player_name)
     return fin_lst
 def write_json(lst):
-    pass
+    prem_player = pd.read_excel("Prem Def.xlsx")
+    laliga_player = pd.read_excel("LaLiga_def.xlsx")
+    bun_player = pd.read_excel("Bundesliga def.xlsx")
+    frn_player = pd.read_excel("Ligue_une_def.xlsx")
+    itly_player = pd.read_excel("Serie A def.xlsx")
+    combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])
+    combine.drop("UID", axis='columns', inplace=True)
+    combine.set_index("Name", inplace=True)
+    for i in lst:
+        pass
 def view_shortlist(inpt):
     """
     A pretty straightforward function which either opens up your shortlist or clears your shortlist
