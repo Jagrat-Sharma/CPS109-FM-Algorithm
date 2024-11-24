@@ -34,20 +34,29 @@ def player_search():
         league = rd.randint(1, 5)
     while True:
         if league == 1 or league == '1':
-            pass
+            premier_league()
         elif league == 2 or league == '2':
-            pass
+            laliga()
         elif league == 3 or league == '3':
-            pass
+            serie_a()
         elif league == 4 or league == '4':
-            pass
+            bundesliga()
         elif league == 5 or league == '5':
-            pass
+            ligue_un()
         else:
             print("Invalid Input")
 
 def premier_league():
-    pass
+    print("English Premier League has been selected.")
+    conf = input("Would you like to change your preference? (yes/no): ")
+    while True:
+        if conf.casefold() == 'yes':
+            return None
+        elif conf.casefold() == 'no':
+            print("Please Select Your Team from the list below:")
+            print("1. Arsenal ")
+        else:
+            print("Please enter a valid input.")
 def laliga():
     pass
 def bundesliga():
