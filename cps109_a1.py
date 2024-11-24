@@ -21,7 +21,7 @@ save and based on the stats of your injured defender it finds a good replacement
 
 This approach is inspired by the movie 'Moneyball' and uses a similar approach to find replacement players.
 
-This project uses three libraries: pandas, random and datetime
+This project uses three libraries: pandas, random, os and datetime
 """
 # ---------------------------------------
 # Code
@@ -30,21 +30,34 @@ def player_search():
     pass
 
 
-def view_shortlist():
-    if os.path.exists(file):
-        pass
+def view_shortlist(inpt):
+    if inpt==1:
+        os.open("Shortlist.json", os.O_RDONLY)
+    elif inpt==2:
+        conf = input("Are You Sure?: ")
+        if conf.casefold()=="yes":
+            open("Shortlist.json", "w").close()
+        elif conf.casefold()=="no":
+            return None
+        else:
+            print("Please enter yes or no")
+    elif inpt==3:
+        exit()
     else:
-        pass
-
+        print("Please enter a valid Choice")
 
 print("\n\nWelcome To Football Manager Scouting System\n\nWould You Like To:\n1. Search for a player" )
-print("2. View Your Shortlist\n3. Exit this program")
+print("2. Manage Your Shortlist\n3. Exit this program\n")
 while True:
     usr = input("Enter Your Choice: ")
     if usr == "1":
         player_search()
     elif usr == "2":
-        view_shortlist()
+        srtlst = input("1. View Your Shortlist\n2. Reset Your Shortlist\n3. Exit this program\n")
+        if os.path.exists("Shortlist.json"):
+            view_shortlist(srtlst)
+        else:
+            print("Shortlist Doesn't Exist.")
     elif usr == "3":
         exit()
     else:
