@@ -1,5 +1,12 @@
 import pandas as pd, datetime as dt, random as rd, os
 # ---------------------------------------
+# Student Information
+# ---------------------------------------
+"""
+Name: Jagrat Sharma
+Student No.: 501329185
+"""
+# ---------------------------------------
 # Problem Description
 # ---------------------------------------
 """
@@ -13,8 +20,8 @@ scouts, they won't be able to find a replacement in time. So you need to find a 
 injured defender and is currently in form.
 
 So what this program does is it takes an .xlsx file containing the information of players from your Football Manager
-save and based on the stats of your injured defender it finds a good replacement and writes them in a json file which 
-acts as your shortlist.
+save and based on the stats of your injured defender it finds a good replacement and writes them in a .txt or .xlsx 
+file which acts as your shortlist.
 
 This program is inspired by the movie 'Moneyball' and uses a similar approach to find replacement players.
 
@@ -27,7 +34,7 @@ def team_select():
     print("\nWelcome To Player Search\n Please Select The League in which your team is playing.")
     print("\n1. English Premier League\n 2. LaLiga\n 3. Serie A\n 4. Bundesliga\n5. Ligue 1 Uber Eats")
     while True:
-        league = input('\nType the corresponding number to select or Leave Empty for a random league: ')
+        league = input('\nType the corresponding number to select or Leave Empty for a random league or type exit to exit: ')
         if league == '':
             league = rd.randint(1, 5)
         if league == 1 or league == '1':
@@ -40,6 +47,8 @@ def team_select():
             bundesliga()
         elif league == 5 or league == '5':
             ligue_un()
+        elif league == 'exit':
+            exit()
         else:
             print("Invalid Input")
 
@@ -85,6 +94,8 @@ def premier_league():
         # write_json(fin_lst)
         x, y = player_search(disc[int(team)], "Prem")
         fin_lst = find_replacement(x, y)
+        write_to_file(fin_lst, y)
+        exit()
 def laliga():
     print("LaLiga has been selected.")
     disc = {
@@ -127,6 +138,8 @@ def laliga():
             # write_json(fin_lst)
         x, y = player_search(disc[int(team)], "LaLiga")
         fin_lst = find_replacement(x, y)
+        write_to_file(fin_lst, y)
+        exit()
 def bundesliga():
     disc = {
         1: "1. FC Köln",
@@ -165,6 +178,8 @@ def bundesliga():
             print("Invalid Input")
         x, y = player_search(disc[int(team)], "Germany")
         fin_lst = find_replacement(x, y)
+        write_to_file(fin_lst, y)
+        exit()
 def serie_a():
     print("Serie A has been selected.")
     disc = {
@@ -207,6 +222,8 @@ def serie_a():
         # write_json(fin_lst)
         x, y = player_search(disc[int(team)], "Italy")
         fin_lst = find_replacement(x, y)
+        write_to_file(fin_lst, y)
+        exit()
 def ligue_un():
     disc = {
         1: "AJ Auxerre",
@@ -246,6 +263,8 @@ def ligue_un():
             print("Invalid Input")
         x, y = player_search(disc[int(team)], "Fren")
         fin_lst = find_replacement(x, y)
+        write_to_file(fin_lst, y)
+        exit()
 def player_search(team, league):
     if league == "Prem":
         player = pd.read_excel("Prem Def.xlsx")
@@ -323,7 +342,7 @@ def find_replacement(player, player_name):
             total += 1
     fin_lst.remove(player_name)
     return fin_lst
-def write_json(lst):
+def write_to_file(lst, pl):
     prem_player = pd.read_excel("Prem Def.xlsx")
     laliga_player = pd.read_excel("LaLiga_def.xlsx")
     bun_player = pd.read_excel("Bundesliga def.xlsx")
@@ -332,8 +351,22 @@ def write_json(lst):
     combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])
     combine.drop("UID", axis='columns', inplace=True)
     combine.set_index("Name", inplace=True)
-    for i in lst:
-        pass
+    p= combine.loc[lst]
+    p.drop("Best Pos", axis='columns', inplace=True)
+    p.drop("Pres A/90", axis='columns', inplace=True)
+    p.drop("Tck/90", axis='columns', inplace=True)
+    p.drop("Mins", axis='columns', inplace=True)
+    p.drop("Tck R", axis='columns', inplace=True)
+    p.drop("Poss Won/90", axis='columns', inplace=True)
+    p.drop("Clr/90", axis='columns', inplace=True)
+    p.drop("Poss Lost/90", axis='columns', inplace=True)
+    p.drop("Hdrs W/90", axis='columns', inplace=True)
+    p.drop("Blk/90", axis='columns', inplace=True)
+    p.drop("Shts Blckd/90", axis='columns', inplace=True)
+    p.drop("K Tck", axis='columns', inplace=True)
+    p.drop("Pas %", axis='columns', inplace=True)
+    p.drop("Int/90", axis='columns', inplace=True)
+    p.to_excel("Shortlist.xlsx", sheet_name=pl)
 def view_shortlist(inpt):
     """
     A pretty straightforward function which either opens up your shortlist or clears your shortlist
