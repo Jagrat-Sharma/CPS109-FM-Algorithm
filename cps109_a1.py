@@ -27,14 +27,47 @@ This project uses three libraries: pandas, random, os and datetime
 # Code
 # ---------------------------------------
 def player_search():
+    print("\nWelcome To Player Search\n Please Select The League in which your team is playing.")
+    print("\n1. English Premier League\n 2. LaLiga\n 3. Serie A\n 4. Bundesliga\n5. Ligue 1 Uber Eats")
+    league = input('\nType the corresponding number to select or Leave Empty for a random league: ')
+    if league == '':
+        league = rd.randint(1, 5)
+    while True:
+        if league == 1 or league == '1':
+            pass
+        elif league == 2 or league == '2':
+            pass
+        elif league == 3 or league == '3':
+            pass
+        elif league == 4 or league == '4':
+            pass
+        elif league == 5 or league == '5':
+            pass
+        else:
+            print("Invalid Input")
+
+def premier_league():
+    pass
+def laliga():
+    pass
+def bundesliga():
+    pass
+def serie_a():
+    pass
+def ligue_un():
     pass
 
 
 def view_shortlist(inpt):
+    """
+    A pretty straightforward function which either opens up your shortlist or clears your shortlist
+    :param inpt:
+    :return Noting:
+    """
     if inpt==1:
         os.open("Shortlist.json", os.O_RDONLY)
     elif inpt==2:
-        conf = input("Are You Sure?: ")
+        conf = input("Are You Sure? (yes/no): ")
         if conf.casefold()=="yes":
             open("Shortlist.json", "w").close()
         elif conf.casefold()=="no":
@@ -49,7 +82,7 @@ def view_shortlist(inpt):
 print("\n\nWelcome To Football Manager Scouting System\n\nWould You Like To:\n1. Search for a player" )
 print("2. Manage Your Shortlist\n3. Exit this program\n")
 while True:
-    usr = input("Enter Your Choice: ")
+    usr = input("Type the Corresponding number to enter your Choice: ")
     if usr == "1":
         player_search()
     elif usr == "2":
