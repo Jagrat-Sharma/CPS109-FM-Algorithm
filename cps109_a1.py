@@ -29,10 +29,10 @@ This project uses three libraries: pandas, random, os and datetime
 def team_select():
     print("\nWelcome To Player Search\n Please Select The League in which your team is playing.")
     print("\n1. English Premier League\n 2. LaLiga\n 3. Serie A\n 4. Bundesliga\n5. Ligue 1 Uber Eats")
-    league = input('\nType the corresponding number to select or Leave Empty for a random league: ')
-    if league == '':
-        league = rd.randint(1, 5)
     while True:
+        league = input('\nType the corresponding number to select or Leave Empty for a random league: ')
+        if league == '':
+            league = rd.randint(1, 5)
         if league == 1 or league == '1':
             premier_league()
         elif league == 2 or league == '2':
@@ -49,6 +49,28 @@ def team_select():
 def premier_league():
     print("English Premier League has been selected.")
     conf = input("Would you like to change your preference? (yes/no): ")
+    disc = {
+        1:"Arsenal",
+        6:"Burnley",
+        11:"Ipswich",
+        16:"Norwich",
+        2:"Aston Villa",
+        7:"Chelsea",
+        12:"Liverpool",
+        17:"Nottm Forest",
+        3:"Bournemouth",
+        8:"Crystal Palace",
+        13:"Man City",
+        18:"Sunderland",
+        4:"Brentford",
+        9:"Everton",
+        14:"Man UFC",
+        19:"Tottenham",
+        5:"Brighton",
+        10:"Fullham",
+        15:"Newcastle",
+        20:"West Ham"
+    }
     while True:
         if conf.casefold() == 'yes':
             return None
@@ -61,8 +83,11 @@ def premier_league():
                   "5. Brighton          10. Fullham         15. Newcastle        20. West Ham")
             team = input("Enter the corresponding number for the team or leave empty for : ")
             if team == '':
-                team = str(rd.randint(1, 20))
-            prem_player_search(team)
+                team = rd.randint(1, 20)
+                print("Selected Team is", disc[team])
+            x, y = prem_player_search(disc[int(team)])
+            fin_lst = find_replacement(x, y)
+            write_json(fin_lst)
         else:
             print("Please enter a valid input.")
 def laliga():
@@ -139,8 +164,49 @@ def prem_player_search(team):
         else:
             break
     player_stats = name.loc[player_name]
-    return player_stats
-def find_replacement(player):
+    return player_stats, player_name
+def find_replacement(player, player_name):
+    fin_lst = []
+    prem_player = pd.read_excel("Prem Def.xlsx")
+    laliga_player = pd.read_excel("LaLiga_def.xlsx")
+    bun_player = pd.read_excel("Bundesliga def.xlsx")
+    frn_player = pd.read_excel("Ligue_une_def.xlsx")
+    itly_player = pd.read_excel("Serie A def.xlsx")
+    combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])
+    combine.set_index("UID", inplace=True)
+    combine.drop("Best Pos", axis='columns', inplace=True)
+    total = 0
+    for i in combine.index:
+        sum = 0
+        if (player["Mins"]*55/100) < combine.loc[i]["Mins"]:
+            if (player["Tck/90"]*95/100) < combine.loc[i]["Tck/90"]:
+                sum += 1
+            if (player["Pres A/90"]*95/100) < combine.loc[i]["Pres A/90"]:
+                sum += 1
+            if (player["Poss Won/90"]*95/100) < combine.loc[i]["Poss Won/90"]:
+                sum += 1
+            if (player["Clr/90"]*95/100) < combine.loc[i]["Clr/90"]:
+                sum += 1
+            if (player["Poss Lost/90"]*95/100) > combine.loc[i]["Poss Lost/90"]:
+                sum += 1
+            if (player["Pas %"]*95/100) < combine.loc[i]["Pas %"]:
+                sum += 1
+            if (player["Int/90"]*95/100) < combine.loc[i]["Int/90"]:
+                sum += 1
+            if (player["Hdrs W/90"]*95/100) < combine.loc[i]["Hdrs W/90"]:
+                sum += 1
+            if (player["Blk/90"]*95/100) < combine.loc[i]["Blk/90"]:
+                sum += 1
+            if (player["Shts Blckd/90"]*95/100) < combine.loc[i]["Shts Blckd/90"]:
+                sum += 1
+            if (player["K Tck"]/player["Mins"])<(combine.loc[i]["K Tck"]/player["Mins"]):
+                sum += 1
+        if sum >= 7:
+            fin_lst.append(combine.loc[i]["Name"])
+            total += 1
+    fin_lst.remove(player_name)
+    return fin_lst
+def write_json(lst):
     pass
 def view_shortlist(inpt):
     """
