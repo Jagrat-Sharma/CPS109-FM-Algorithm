@@ -6,7 +6,7 @@ import os
 # Problem Description
 # ---------------------------------------
 """
-This is a problem which happened to me a while ago so I thought it could be a good project.
+This is a problem which happened to me not too long ago so I thought it could be a good project.
 
 Suppose You are playing Football Manager, and it's the final few days of the January transfer window. Your team is in
 good form could potentially win the league title, but suddenly you find out that one of your key defender is injured
@@ -16,12 +16,12 @@ scouts, they won't be able to find a replacement in time. So you need to find a 
 injured defender and is currently in form.
 
 So what this program does is it takes an .xlsx file containing the information of players from your Football Manager
-save and based on the stats of your injured defender it finds a good replacement while taking into account their age
- and writes them in a json file which acts as your shortlist.
+save and based on the stats of your injured defender it finds a good replacement and writes them in a json file which 
+acts as your shortlist.
 
-This approach is inspired by the movie 'Moneyball' and uses a similar approach to find replacement players.
+This program is inspired by the movie 'Moneyball' and uses a similar approach to find replacement players.
 
-This project uses three libraries: pandas, random, os and datetime
+This project uses four libraries: pandas, random, os and datetime
 """
 # ---------------------------------------
 # Code
