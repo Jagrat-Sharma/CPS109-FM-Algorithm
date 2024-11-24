@@ -54,17 +54,62 @@ def premier_league():
             return None
         elif conf.casefold() == 'no':
             print("Please Select Your Team from the list below:")
-            print("1. Arsenal ")
+            print("1. Arsenal           6. Burnley          11. Ipswich          16. Norwich\n"
+                  "2. Aston Villa       7. Chelsea          12. Liverpool        17. Nottm Forest\n"
+                  "3. Bournemouth       8. Crystal Palace   13. Man City         18. Sunderland\n"
+                  "4. Brentford         9. Everton          14. Man UFC          19. Tottenham\n"
+                  "5. Brighton          10. Fullham         15. Newcastle        20. West Ham")
+            team = input("Enter the corresponding number for the team or leave empty for : ")
         else:
             print("Please enter a valid input.")
 def laliga():
-    pass
+    print("LaLiga has been selected.")
+    conf = input("Would you like to change your preference? (yes/no): ")
+    while True:
+        if conf.casefold() == 'yes':
+            return None
+        elif conf.casefold() == 'no':
+            print("Please Select Your Team from the list below:")
+            print("1. A.Bilbao              6. Cádiz          11. Las Palmas          16. Sevilla\n"
+                  "2. A. Madrid             7. Espanyol       12. R. Madrid           17. Tenerife\n"
+                  "3. Alavés                8. Getafe         13. Real Hispalis       18. Valencia\n"
+                  "4. Atlético Pamplona     9. Girona         14. Real San Sebastián  19. Vallecano\n"
+                  "5. Barcelona             10. Granada       15. S. Gijón            20. Villarreal")
+        else:
+            print("Please enter a valid input.")
 def bundesliga():
-    pass
+    print("Bundesliga has been selected.")
+    conf = input("Would you like to change your preference? (yes/no): ")
+    while True:
+        if conf.casefold() == 'yes':
+            return None
+        elif conf.casefold() == 'no':
+            print("Please Select Your Team from the list below:")
+            print("1. 1. FC Köln              6. Eintracht Frankfurt          11. Mainz 05           16. VfB Stuttgart\n"
+                  "2. Augsburg                7. FC Bayern                    12. Nürnberg           17. VfL Bochum\n"
+                  "3. Bayer 04                8. Heidenheim                   13. RB Leipzig         18. VfL Wolfsburg\n"
+                  "4. Borussia Dortmund       9. Hertha BSC                   14. SC Freiburg\n"
+                  "5. Borussia M'gladbach     10. HSV                         15. TSG Hoffenheim")
+        else:
+            print("Please enter a valid input.")
 def serie_a():
     pass
 def ligue_un():
-    pass
+    print("Ligue 1 Uber Eats has been selected.")
+    conf = input("Would you like to change your preference? (yes/no): ")
+    while True:
+        if conf.casefold() == 'yes':
+            return None
+        elif conf.casefold() == 'no':
+            print("Please Select Your Team from the list below:")
+            print(
+                "1. AJ Auxerre             6. FC Lorient          11. OGC Nice          16. Rennes\n"
+                "2. AS Monaco              7. FC Nantes           12. OL                17. Strasbourg\n"
+                "3. ASSE                   8. Havre AC            13. OM                18. Toulouse FC\n"
+                "4. Bordeaux               9. LOSC                14. Paris SG\n"
+                "5. Brest                  10. Montpellier        15. RC Lens")
+        else:
+            print("Please enter a valid input.")
 
 
 def view_shortlist(inpt):
