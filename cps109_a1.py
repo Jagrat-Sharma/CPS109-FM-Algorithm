@@ -26,7 +26,7 @@ This project uses three libraries: pandas, random, os and datetime
 # ---------------------------------------
 # Code
 # ---------------------------------------
-def player_search():
+def team_select():
     print("\nWelcome To Player Search\n Please Select The League in which your team is playing.")
     print("\n1. English Premier League\n 2. LaLiga\n 3. Serie A\n 4. Bundesliga\n5. Ligue 1 Uber Eats")
     league = input('\nType the corresponding number to select or Leave Empty for a random league: ')
@@ -60,6 +60,9 @@ def premier_league():
                   "4. Brentford         9. Everton          14. Man UFC          19. Tottenham\n"
                   "5. Brighton          10. Fullham         15. Newcastle        20. West Ham")
             team = input("Enter the corresponding number for the team or leave empty for : ")
+            if team == '':
+                team = str(rd.randint(1, 20))
+            prem_player_search(team)
         else:
             print("Please enter a valid input.")
 def laliga():
@@ -110,8 +113,35 @@ def ligue_un():
                 "5. Brest                  10. Montpellier        15. RC Lens")
         else:
             print("Please enter a valid input.")
-
-
+def prem_player_search(team):
+    player = pd.read_excel("Prem Def.xlsx")
+    player.set_index("Club", inplace=True)
+    name = player.set_index("Name", inplace=False)
+    club_player = player.loc[team]
+    club_player.set_index("UID", inplace=True)
+    lst = []
+    for i in club_player.index:
+        lst.append(club_player.loc[i]['Name'])
+    print("chose player")
+    app = 1
+    dct = {}
+    for i in lst:
+        print(app, ". ", i, sep='')
+        dct[app] = i
+        app += 1
+    # print(dct)
+    x = int(input("Enter Your Player: "))
+    while True:
+        try:
+            player_name = dct[x]
+        except KeyError:
+            print("enter the correct number")
+        else:
+            break
+    player_stats = name.loc[player_name]
+    return player_stats
+def find_replacement(player):
+    pass
 def view_shortlist(inpt):
     """
     A pretty straightforward function which either opens up your shortlist or clears your shortlist
@@ -132,13 +162,12 @@ def view_shortlist(inpt):
         exit()
     else:
         print("Please enter a valid Choice")
-
 print("\n\nWelcome To Football Manager Scouting System\n\nWould You Like To:\n1. Search for a player" )
 print("2. Manage Your Shortlist\n3. Exit this program\n")
 while True:
     usr = input("Type the Corresponding number to enter your Choice: ")
     if usr == "1":
-        player_search()
+        team_select()
     elif usr == "2":
         srtlst = input("1. View Your Shortlist\n2. Reset Your Shortlist\n3. Exit this program\n")
         if os.path.exists("Shortlist.json"):
