@@ -1,4 +1,4 @@
-import pandas as pd, datetime as dt, random as rd, os
+import pandas as pd, random as rd, os
 # ---------------------------------------
 # Student Information
 # ---------------------------------------
@@ -25,12 +25,17 @@ file which acts as your shortlist.
 
 This program is inspired by the movie 'Moneyball' and uses a similar approach to find replacement players.
 
-This project uses four libraries: pandas, random, os and datetime
+This project uses three libraries: pandas, random and os
 """
 # ---------------------------------------
 # Code
 # ---------------------------------------
 def team_select():
+    """
+    The most basic search function of the program which prompts the user to pick a between 5 leagues and based on their
+    input calls their respective functions,which makes it easier for the user to select their team.
+    :return:
+    """
     print("\nWelcome To Player Search\n Please Select The League in which your team is playing.")
     print("\n1. English Premier League\n 2. LaLiga\n 3. Serie A\n 4. Bundesliga\n5. Ligue 1 Uber Eats")
     while True:
@@ -51,8 +56,13 @@ def team_select():
             exit()
         else:
             print("Invalid Input")
-
 def premier_league():
+    """
+    This function is executed when the user selects Premier League. This function contains the names of all the teams
+    currently in the league. This function prompts the use to select a team and based on their choice tells the next
+    function the name of the league and the team selected b the user
+    :return:
+    """
     print("English Premier League has been selected.")
     disc = {
         1:"Arsenal",
@@ -75,7 +85,7 @@ def premier_league():
         10:"Fullham",
         15:"Newcastle",
         20:"West Ham"
-    }
+    } # A dictionary containing all the team names with their keys being their alphabetical position as numbers
     print("Please Select Your Team from the list below:")
     print("1. Arsenal           6. Burnley          11. Ipswich          16. Norwich\n"
           "2. Aston Villa       7. Chelsea          12. Liverpool        17. Nottm Forest\n"
@@ -85,18 +95,22 @@ def premier_league():
     while True:
         team = input("Enter the corresponding number for the team or leave empty for a random team: ")
         if team == '':
-            team = rd.randint(1, 20)
+            team = rd.randint(1, 20) # Picks a random number for if the user does not have knowledge of the game
         try:
             print("Selected Team is", disc[int(team)])
         except:
             print("Invalid Input")
-        # else:
-        # write_json(fin_lst)
         x, y = player_search(disc[int(team)], "Prem")
         fin_lst = find_replacement(x, y)
         write_to_file(fin_lst, y)
+        print()
+        print("Players Added to Shortlist.")
         exit()
 def laliga():
+    """
+    The exact copy of premier_league() function with the exact same functions but only different team names
+    :return:
+    """
     print("LaLiga has been selected.")
     disc = {
         1:"A. Bilbao",
@@ -139,8 +153,14 @@ def laliga():
         x, y = player_search(disc[int(team)], "LaLiga")
         fin_lst = find_replacement(x, y)
         write_to_file(fin_lst, y)
+        print()
+        print("Players Added to Shortlist.")
         exit()
 def bundesliga():
+    """
+    The exact copy of premier_league() function with the exact same functions but only different team names
+    :return:
+    """
     disc = {
         1: "1. FC Köln",
         6: "Eintracht Frankfurt",
@@ -179,8 +199,14 @@ def bundesliga():
         x, y = player_search(disc[int(team)], "Germany")
         fin_lst = find_replacement(x, y)
         write_to_file(fin_lst, y)
+        print()
+        print("Players Added to Shortlist.")
         exit()
 def serie_a():
+    """
+    The exact copy of premier_league() function with the exact same functions but only different team names
+    :return:
+    """
     print("Serie A has been selected.")
     disc = {
         1: "AC Milan",
@@ -223,8 +249,14 @@ def serie_a():
         x, y = player_search(disc[int(team)], "Italy")
         fin_lst = find_replacement(x, y)
         write_to_file(fin_lst, y)
+        print()
+        print("Players Added to Shortlist.")
         exit()
 def ligue_un():
+    """
+    The exact copy of premier_league() function with the exact same functions but only different team names
+    :return:
+    """
     disc = {
         1: "AJ Auxerre",
         6: "FC Lorient",
@@ -264,8 +296,18 @@ def ligue_un():
         x, y = player_search(disc[int(team)], "Fren")
         fin_lst = find_replacement(x, y)
         write_to_file(fin_lst, y)
+        print()
+        print("Players Added to Shortlist.")
         exit()
 def player_search(team, league):
+    """
+    The Most important function of the program which uses pandas to cycle through the dataframe and display players of
+    the selected team.
+    :param team: The name of the team selected in the previous step of the program.
+    :param league: The name of league selected in the previous step of the program.
+    :return: The stats of the selected player and the name of that player.
+    """
+    # If/Elif Block which selects based on the league parameter which .xlsx file to read
     if league == "Prem":
         player = pd.read_excel("Prem Def.xlsx")
     elif league == "LaLiga":
@@ -276,10 +318,10 @@ def player_search(team, league):
         player = pd.read_excel("Bundesliga def.xlsx")
     else:
         player = pd.read_excel("Serie A def.xlsx")
-    player.set_index("Club", inplace=True)
-    name = player.set_index("Name", inplace=False)
-    club_player = player.loc[team]
-    club_player.set_index("UID", inplace=True)
+    player.set_index("Club", inplace=True) # Sets the Column "Club" as the index of the DataFrame
+    name = player.set_index("Name", inplace=False)# Makes a new dataframe which has the column "Name" as it's index
+    club_player = player.loc[team] # Makes a new dataframe which only contains the players who have their index as the team selected.
+    club_player.set_index("UID", inplace=True) # Changes the index of the dataframe obtained above to unique ID
     lst = []
     for i in club_player.index:
         lst.append(club_player.loc[i]['Name'])
@@ -302,8 +344,17 @@ def player_search(team, league):
     player_stats = name.loc[player_name]
     return player_stats, player_name
 def find_replacement(player, player_name):
+    """
+    The Second most important function of the program which takes two parameters and based on them cycle through all the
+    available players and finds the players which beat the current injured player in at least 7 of the most important
+    stats for a defender chosen by us
+    :param player: Stats of the injured player
+    :param player_name: Name of the injured
+    :return: list containing the names of players who can be the replacements
+    """
     fin_lst = []
-    prem_player = pd.read_excel("Prem Def.xlsx")
+    prem_player = pd.read_excel("Prem Def.xlsx")    #Reads the excel file cointaining the stats of premier league defenders
+    #Reads the excel file for their respective leagues and combine them together to form a huge dataframe containing all players
     laliga_player = pd.read_excel("LaLiga_def.xlsx")
     bun_player = pd.read_excel("Bundesliga def.xlsx")
     frn_player = pd.read_excel("Ligue_une_def.xlsx")
@@ -311,10 +362,12 @@ def find_replacement(player, player_name):
     combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])
     combine.set_index("UID", inplace=True)
     combine.drop("Best Pos", axis='columns', inplace=True)
-    total = 0
+    total = 0 # Count which represents the number of players deemed as replacements for the  injured player
     for i in combine.index:
         sum = 0
-        if (player["Mins"]*55/100) < combine.loc[i]["Mins"]:
+        if (player["Mins"]*55/100) < combine.loc[i]["Mins"]: # Checks the amount of Minutes the player has played should be 55% of our injured player
+            #Checks all the key stats and with a -5% margin if the player selected by the for loop outperforms our injured player adds one to sum value which acts a tracker
+            # for in how many key stats is the selected player better than the injured one
             if (player["Tck/90"]*95/100) < combine.loc[i]["Tck/90"]:
                 sum += 1
             if (player["Pres A/90"]*95/100) < combine.loc[i]["Pres A/90"]:
@@ -331,27 +384,36 @@ def find_replacement(player, player_name):
                 sum += 1
             if (player["Hdrs W/90"]*95/100) < combine.loc[i]["Hdrs W/90"]:
                 sum += 1
-            if (player["Blk/90"]*95/100) < combine.loc[i]["Blk/90"]:
+            if (player["Blk/90"]*0.95) < (combine.loc[i]["Blk/90"]):
                 sum += 1
             if (player["Shts Blckd/90"]*95/100) < combine.loc[i]["Shts Blckd/90"]:
                 sum += 1
             if (player["K Tck"]/player["Mins"])<(combine.loc[i]["K Tck"]/player["Mins"]):
                 sum += 1
         if sum >= 7:
-            fin_lst.append(combine.loc[i]["Name"])
+            fin_lst.append(combine.loc[i]["Name"]) #Adds the players who are better in at least 7 stats to a list which is returned at the end of the function
             total += 1
-    fin_lst.remove(player_name)
+    fin_lst.remove(player_name) # removes the player's own name from the list
     return fin_lst
 def write_to_file(lst, pl):
-    prem_player = pd.read_excel("Prem Def.xlsx")
-    laliga_player = pd.read_excel("LaLiga_def.xlsx")
-    bun_player = pd.read_excel("Bundesliga def.xlsx")
-    frn_player = pd.read_excel("Ligue_une_def.xlsx")
-    itly_player = pd.read_excel("Serie A def.xlsx")
-    combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])
-    combine.drop("UID", axis='columns', inplace=True)
-    combine.set_index("Name", inplace=True)
-    p= combine.loc[lst]
+    """
+    A function which takes a parameter lst containing the names of players who have been determined they could
+    replace our injured player and pl being the name of the injured player.This function writes the names, age club,
+    transfer value, etc. of the players in lst to a .xlsx file with it's spreadsheet name being the name of the injured player.
+    :param lst:
+    :param pl:
+    :return:
+    """
+    prem_player = pd.read_excel("Prem Def.xlsx")        #Reads the excel file cointaining the stats of premier league defenders
+    laliga_player = pd.read_excel("LaLiga_def.xlsx")    #Reads the excel file cointaining the stats of Laliga defenders
+    bun_player = pd.read_excel("Bundesliga def.xlsx")   #Reads the excel file cointaining the stats of Bundesliga defenders
+    frn_player = pd.read_excel("Ligue_une_def.xlsx")    #Reads the excel file cointaining the stats of League one defenders
+    itly_player = pd.read_excel("Serie A def.xlsx")     #Reads the excel file cointaining the stats of Serie Adefenders
+    combine = pd.concat([prem_player, laliga_player, bun_player, frn_player, itly_player])  #Combines the five dataframes obtained above into a single one
+    combine.drop("UID", axis='columns', inplace=True)   #Removes The UID Column
+    combine.set_index("Name", inplace=True)     #Sets the Name Column As the index
+    p= combine.loc[lst] #
+    #Remove Unnecessary Columns that we don't neeed
     p.drop("Best Pos", axis='columns', inplace=True)
     p.drop("Pres A/90", axis='columns', inplace=True)
     p.drop("Tck/90", axis='columns', inplace=True)
@@ -366,6 +428,7 @@ def write_to_file(lst, pl):
     p.drop("K Tck", axis='columns', inplace=True)
     p.drop("Pas %", axis='columns', inplace=True)
     p.drop("Int/90", axis='columns', inplace=True)
+    # Writes the final dataframe to excel file
     p.to_excel("Shortlist.xlsx", sheet_name=pl)
 def view_shortlist(inpt):
     """
@@ -373,12 +436,14 @@ def view_shortlist(inpt):
     :param inpt:
     :return Noting:
     """
-    if inpt==1:
-        os.open("Shortlist.json", os.O_RDONLY)
-    elif inpt==2:
+    if inpt=='1':
+        os.system("start EXCEL.EXE Shortlist.xlsx")
+        exit()
+    elif inpt=='2':
         conf = input("Are You Sure? (yes/no): ")
         if conf.casefold()=="yes":
-            open("Shortlist.json", "w").close()
+            open("Shortlist.xlsx", "w").close()
+            exit()
         elif conf.casefold()=="no":
             return None
         else:
@@ -387,15 +452,20 @@ def view_shortlist(inpt):
         exit()
     else:
         print("Please enter a valid Choice")
+#Basic Greeting to the user
 print("\n\nWelcome To Football Manager Scouting System\n\nWould You Like To:\n1. Search for a player" )
 print("2. Manage Your Shortlist\n3. Exit this program\n")
 while True:
+    """
+    A while loop that prompts the user to select a choice which starts the function
+    """
     usr = input("Type the Corresponding number to enter your Choice: ")
     if usr == "1":
         team_select()
     elif usr == "2":
-        srtlst = input("1. View Your Shortlist\n2. Reset Your Shortlist\n3. Exit this program\n")
-        if os.path.exists("Shortlist.json"):
+        print("How would you like to Manage theshortlist")
+        srtlst = input("1. View Your Shortlist\n2. Reset Your Shortlist\n3. Exit this program\n: ")
+        if os.path.exists("Shortlist.xlsx"):
             view_shortlist(srtlst)
         else:
             print("Shortlist Doesn't Exist.")
