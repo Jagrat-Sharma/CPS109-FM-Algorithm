@@ -429,7 +429,7 @@ def write_to_file(lst, pl):
     p.drop("Pas %", axis='columns', inplace=True)
     p.drop("Int/90", axis='columns', inplace=True)
     # Writes the final dataframe to excel file
-    p.to_excel("Shortlist.xlsx", sheet_name=pl)
+    p.to_excel("cps109_a1_output.xlsx", sheet_name=pl)
 def view_shortlist(inpt):
     """
     A pretty straightforward function which either opens up your shortlist or clears your shortlist
@@ -437,12 +437,12 @@ def view_shortlist(inpt):
     :return Noting:
     """
     if inpt=='1':
-        os.system("start EXCEL.EXE Shortlist.xlsx")
+        os.system("start EXCEL.EXE cps109_a1_output.xlsx")
         exit()
     elif inpt=='2':
         conf = input("Are You Sure? (yes/no): ")
         if conf.casefold()=="yes":
-            open("Shortlist.xlsx", "w").close()
+            open("cps109_a1_output.xlsx", "w").close()
             exit()
         elif conf.casefold()=="no":
             return None
@@ -465,7 +465,7 @@ while True:
     elif usr == "2":
         print("How would you like to Manage theshortlist")
         srtlst = input("1. View Your Shortlist\n2. Reset Your Shortlist\n3. Exit this program\n: ")
-        if os.path.exists("Shortlist.xlsx"):
+        if os.path.exists("cps109_a1_output.xlsx"):
             view_shortlist(srtlst)
         else:
             print("Shortlist Doesn't Exist.")
